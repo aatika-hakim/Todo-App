@@ -4,9 +4,10 @@ from sqlmodel import SQLModel, Field, Session, select, create_engine
 from typing import Annotated, Optional
 from app import settings
 
-
+# Initialize FastAPI app
 app: FastAPI = FastAPI()
 
+# Define Todo model
 class Todo(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     content: str = Field(index=True)
@@ -14,17 +15,23 @@ class Todo(SQLModel, table=True):
 
 # only needed for psycopg 3
 # Replacing postgresql with postgresql+psycopg2
+# Connection string for PostgreSQL database
 connection_string = str(settings.DATABASE_URL).replace(
     "postgresql", "postgresql+psycopg"
 )
 
 
+# Create engine for database connection
 engine = create_engine(
     connection_string, connect_args={"sslmode": "require"}, pool_recycle=300, echo=True
 )
+
+# Function to create database tables
 def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
 
+
+# Context manager to handle application lifespan events
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("Creating tables..")
@@ -32,18 +39,23 @@ async def lifespan(app: FastAPI):
     yield
 
 
+# Initialize FastAPI app with lifespan context manager
 app = FastAPI(lifespan=lifespan)
 
+
+# Dependency to get database session
 def get_session():
     with Session(engine) as session:
         yield session
 
 
+# Route to read main page
 @app.get("/")
 def read_main():
     return {"Response": "Todo App"}
 
 
+# Route to create a new todo
 @app.post("/todos/", response_model=Todo)
 def create_todo(todo: Todo, session: Annotated[Session, Depends(get_session)]):
     print(f"Added Todo {todo}")
@@ -53,7 +65,7 @@ def create_todo(todo: Todo, session: Annotated[Session, Depends(get_session)]):
     return todo
 
 
-
+# Route to read a specific todo by id
 @app.get("/todos/{todo_id}", response_model=Todo)
 def read_todo(todo_id: int, session: Annotated[Session, Depends(get_session)]):
     todo = session.get(Todo, todo_id)
@@ -62,6 +74,7 @@ def read_todo(todo_id: int, session: Annotated[Session, Depends(get_session)]):
     return todo
 
 
+# Route to update a todo
 @app.put("/todos/{todo_id}", response_model=Todo)
 def update_todo(todo_id: int, todo: Todo):
     with Session(engine) as session:
@@ -76,6 +89,7 @@ def update_todo(todo_id: int, todo: Todo):
         return db_todo
 
 
+# Route to delete a todo
 @app.delete("/todos/{todo_id}")
 def delete_todo(todo_id: int):
     with Session(engine) as session:
