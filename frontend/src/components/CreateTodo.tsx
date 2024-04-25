@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Flip, ToastContainer, toast } from "react-toastify";
+import { Bounce, Flip, Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const CreateTodo = () => {
@@ -51,8 +51,8 @@ const CreateTodo = () => {
           pauseOnHover: true,
           draggable: true,
           progress: 0,
-          theme: "colored",
-          transition: Flip,
+          theme: "dark",
+          transition: Slide,
         });
         console.error("Error adding task:", await res.text());
       }
@@ -74,7 +74,7 @@ const CreateTodo = () => {
 
   return (
     <div>
-      <div className="flex flex-col md:flex-row md:gap-5 justify-center items-center gap-2 ">
+      <div className="flex flex-col md:flex-row md:gap-5 justify-center items-center gap-2">
         <form
           className="flex gap-5 flex-col md:flex-row md:gap-2 items-center justify-center"
           onSubmit={SubmitHandler}

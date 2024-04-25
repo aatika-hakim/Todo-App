@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Flip, ToastContainer, toast } from "react-toastify"; 
+import { Flip, Slide, ToastContainer, toast } from "react-toastify"; 
 
 interface Id {
   todo_id: number;
@@ -24,7 +24,7 @@ export default function DeleteTodo({ todo_id }: Id) {
           draggable: true,
           progress: undefined,
           theme: "dark",
-          transition: Flip,
+          transition: Slide,
         });
       } else {
         console.error("Failed to delete Todo.");
