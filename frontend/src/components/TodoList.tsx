@@ -1,156 +1,41 @@
-// 'use client'
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
+import { baseUrl } from "@/src/data/constants";
+import { Todo } from "@/src/types/Todo";
+import DeleteTodo from "./DeleteTodo";
+import UpdateTodo from "./UpdateTodo";
 
-export interface Todo {
-    id: number;
-    content: string;
-}
-
-// const TodoList: React.FC = () => {
-//     const [todos, setTodos] = useState<Todo[]>([]);
-
-//     useEffect(() => {
-//         const fetchTodos = async () => {
-//             try {
-//                 const response = await axios.get<Todo[]>('http://localhost:8000/todos');
-//                 setTodos(response.data);
-//             } catch (error) {
-//                 console.error('Error fetching todos:', error);
-//             }
-//         };
-//         fetchTodos();
-//     }, []); // empty dependency array ensures the effect runs only once on component mount
-
-//     return (
-//         <div>
-//             {todos.map(todo => (
-//                 <div key={todo.id}>
-//                     {todo.content}
-//                 </div>
-//             ))}
-//         </div>
-//     );
-// };
-
-// export default TodoList;
-
-
-
-'use client'
-
-import { useState, useEffect } from 'react';
-
-const apiUrl = 'http://localhost:8000'; 
-
-const TodoList = () => {
-    const [todos, setTodos] = useState([]);
-
-    useEffect(() => {
-        fetchAndRenderTodos();
-        fetchTodos();
-    }, []);
-
-    const fetchTodos = async () => {
-        try {
-            const response = await fetch(`${apiUrl}/todos/`);
-            const data = await response.json();
-            setTodos(data);
-        } catch (error) {
-            console.error('Error fetching todos:', error);
-        }
-    };
-
-    const addTodo = async (content:string) => {
-        try {
-            const todo = { content, id: 0 };
-            const response = await fetch(`${apiUrl}/todos/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(todo)
-            });
-            const data = await response.json();
-            console.log('Todo added:', data);
-            fetchAndRenderTodos();
-        } catch (error) {
-            console.error('Error adding todo:', error);
-        }
-    };
-
-    const deleteTodo = async (todoId:number) => {
-        try {
-            const response = await fetch(`${apiUrl}/todos/${todoId}`, {
-                method: 'DELETE'
-            });
-            if (response.ok) {
-                console.log('Todo deleted successfully');
-                fetchAndRenderTodos();
-            } else {
-                console.error('Failed to delete todo');
-            }
-        } catch (error) {
-            console.error('Error deleting todo:', error);
-        }
-    };
-
-    const updateTodo = async (todoId: number, updatedContent: string) => {
-        const updatedTodo = { content: updatedContent };
-
-        try {
-            const response = await fetch(`${apiUrl}/todos/${todoId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(updatedTodo)
-            });
-            const data = await response.json();
-            console.log('Todo updated:', data);
-            fetchAndRenderTodos();
-        } catch (error) {
-            console.error('Error updating todo:', error);
-        }
-    };
-
-    const fetchAndRenderTodos = async () => {
-        try {
-            const response = await fetch(`${apiUrl}/todos/`);
-            const data = await response.json();
-            setTodos(data);
-        } catch (error) {
-            console.error('Error fetching and rendering todos:', error);
-        }
-    };
-
-    const handleAddTodo = () => {
-        const todoInput = prompt('Enter a new todo:');
-        if (todoInput) {
-            addTodo(todoInput.trim());
-        }
-    };
-
-    return (
-        <div>
-            <button onClick={handleAddTodo}>Add Todo</button>
-            <ul>
-                {todos.map((todo:Todo) => (
-                    <li key={todo.id}>
-                        {todo.content}
-                        <button onClick={() => deleteTodo(todo.id)}>Delete</button>
-                        <button onClick={() => {
-                            const updatedContent = prompt('Enter updated content:', todo.content);
-                            if (updatedContent) {
-                                updateTodo(todo.id, updatedContent.trim());
-                            }
-                        }}>Update</button>
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
+const getTodos = async (): Promise<Todo[]> => {
+  const url = baseUrl();
+  const res = await fetch(`${url}/todos`, {
+    cache: "no-store",
+    next: { tags: ["todos"] },
+  });
+  if (!res.ok) {
+    throw new Error("Failed to get Todos");
+  }
+  // console.log(res);s
+  return await res.json();
 };
 
-export default TodoList;
+export default async function TodoList() {
+  const data = await getTodos();
 
+  return (
+    <ul className="flex flex-col h-[100%] justify-center items-center ">
+      {data.map((item) => (
+        <li
+          key={item.id}
+          className="flex items-center justify-center w-1/3 bg-slate-800 rounded-lg border border-white text-white text-xl py-2 px-10 mt-10 "
+        >
+          <div className="flex-1">{item.content}</div>
+          <DeleteTodo todo_id={item.id} />
+          <UpdateTodo todoId={item.id} />
+        </li>
+      ))}
+      {data && data.length === 0 && (
+        <div className="flex justify-center items-center pt-8 pb-2">
+         No Todo For Today.
+        </div>
+      )}
+    </ul>
+  );
+}
