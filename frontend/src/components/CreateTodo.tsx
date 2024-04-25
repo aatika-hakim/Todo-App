@@ -58,7 +58,7 @@ const CreateTodo = () => {
       }
     } catch (error) {
       toast.error("Something went wrong.", {
-        position: "top-center",
+        position: "top-right",
         autoClose: 5000,
         hideProgressBar: true,
         closeOnClick: true,

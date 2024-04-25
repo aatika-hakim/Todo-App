@@ -16,7 +16,7 @@ export default function DeleteTodo({ todo_id }: Id) {
       if (res.ok) {
         console.log("Todo deleted successfully.");
         toast.success("Todo deleted!", {
-          position: "top-center",
+          position: "top-right",
           autoClose: 5000,
           hideProgressBar: true,
           closeOnClick: true,
