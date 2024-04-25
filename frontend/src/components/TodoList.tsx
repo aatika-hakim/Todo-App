@@ -23,7 +23,7 @@ export default async function TodoList() {
       {data.map((item) => (
         <li
           key={item.id}
-          className="flex items-center justify-center lg:w-1/3 w-full bg-slate-800 rounded-lg border border-white text-white text-xl py-2 px-10 mt-10 "
+          className="flex items-center justify-center w-1/3 bg-slate-800 rounded-lg border border-white text-white text-xl py-2 px-10 mt-10 "
         >
           <div className="flex-1">{item.content}</div>
           <DeleteTodo todo_id={item.id} />
@@ -32,7 +32,7 @@ export default async function TodoList() {
       ))}
       {data && data.length === 0 && (
         <div className="flex justify-center items-center pt-8 pb-2">
-        No Todos For Today.
+         No Todo For Today.
         </div>
       )}
     </ul>

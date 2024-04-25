@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Bounce, Flip, Slide, ToastContainer, toast } from "react-toastify";
+import { Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const CreateTodo = () => {
@@ -18,7 +18,7 @@ const CreateTodo = () => {
         draggable: true,
         progress: 0,
         theme: "dark",
-        transition: Bounce,
+        transition: Slide,
       });
       return;
     }
@@ -32,20 +32,20 @@ const CreateTodo = () => {
       if (res.ok) {
         toast.success("Your Task Added Successfully!", {
           position: "top-center",
-          autoClose: 5000,
+          autoClose: 2000,
           hideProgressBar: true,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: 0,
           theme: "colored",
-          transition: Flip,
+          transition: Slide,
         });
         setTask("");
       } else {
         toast.error("Sorry! Failed to Add Task", {
           position: "top-center",
-          autoClose: 5000,
+          autoClose: 3000,
           hideProgressBar: true,
           closeOnClick: true,
           pauseOnHover: true,
@@ -66,7 +66,7 @@ const CreateTodo = () => {
         draggable: true,
         progress: 0,
         theme: "colored",
-        transition: Flip,
+        transition: Slide,
       });
       console.error("Error:", error);
     }
