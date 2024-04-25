@@ -97,6 +97,17 @@ def read_todo(todo_id: int, session: Annotated[Session, Depends(get_session)]):
 
 
 # Route to update a todo
+@app.delete("/todos/{todo_id}")
+def delete_todo(todo_id: int):
+    with Session(engine) as session:
+        todo = session.get(Todo, todo_id)
+        if not todo:
+            raise HTTPException(status_code=404, detail="Todo not found")
+        session.delete(todo)
+        session.commit()
+        return {"200 OK": "Todo Deleted Successfully"}
+
+
 @app.put("/todos/{todo_id}", response_model=Todo)
 def update_todo(todo_id: int, todo: Todo):
     with Session(engine) as session:
@@ -109,16 +120,4 @@ def update_todo(todo_id: int, todo: Todo):
         session.commit()
         session.refresh(db_todo)
         return db_todo
-
-
-# Route to delete a todo
-@app.delete("/todos/{todo_id}")
-def delete_todo(todo_id: int):
-    with Session(engine) as session:
-        todo = session.get(Todo, todo_id)
-        if not todo:
-            raise HTTPException(status_code=404, detail="Todo not found")
-        session.delete(todo)
-        session.commit()
-        return {"200 OK": "Todo Deleted Successfully"}
 
