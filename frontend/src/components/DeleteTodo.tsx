@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Flip, Slide, ToastContainer, toast } from "react-toastify"; 
+import { Slide, ToastContainer, toast } from "react-toastify"; 
 
 interface Id {
   todo_id: number;
@@ -17,7 +17,7 @@ export default function DeleteTodo({ todo_id }: Id) {
         console.log("Todo deleted successfully.");
         toast.success("Todo deleted!", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 2000,
           hideProgressBar: true,
           closeOnClick: true,
           pauseOnHover: true,

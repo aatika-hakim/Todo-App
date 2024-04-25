@@ -10,15 +10,15 @@ const CreateTodo = () => {
     e.preventDefault(); 
     if (!task.trim()) {
       toast.error("Add Task", {
-        position: "top-center",
-        autoClose: 5000,
+        position: "top-right",
+        autoClose: 2000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: 0,
         theme: "dark",
-        transition: Flip,
+        transition: Bounce,
       });
       return;
     }
@@ -86,7 +86,7 @@ const CreateTodo = () => {
             className="w-full flex-wrap text-white bg-slate-900 p-4 rounded-sm focus:border-2 border-solid border-l-blue-500 border-r-cyan-600 border-t-cyan-600 border-b-purple-700 outline-none hover:bg-blue-950 transition duration-300"
           />
 
-          <button className="w-[50%] p-3 bg-gradient-to-r from-cyan-600 to-purple-600 rounded-md text-md text-white  hover:from-cyan-600 hover:to-blue-800 hover:scale-105 transition duration-300">
+          <button className="w-[50%] p-3 bg-gradient-to-r from-cyan-600 to-purple-600 rounded-md text-md text-white  hover:from-cyan-600 hover:to-purple-800 hover:scale-105 transition duration-300">
             Add Task
           </button>
         </form>
