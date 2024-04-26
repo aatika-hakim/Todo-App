@@ -30,21 +30,21 @@ const CreateTodo = () => {
       });
 
       if (res.ok) {
-        toast.success("Your Task Added Successfully!", {
-          position: "top-center",
+        toast.success("Task Added!", {
+          position: "top-right",
           autoClose: 2000,
           hideProgressBar: true,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: 0,
-          theme: "colored",
+          theme: "dark",
           transition: Slide,
         });
         setTask("");
       } else {
         toast.error("Sorry! Failed to Add Task", {
-          position: "top-center",
+          position: "top-right",
           autoClose: 3000,
           hideProgressBar: true,
           closeOnClick: true,
@@ -65,7 +65,7 @@ const CreateTodo = () => {
         pauseOnHover: true,
         draggable: true,
         progress: 0,
-        theme: "colored",
+        theme: "dark",
         transition: Slide,
       });
       console.error("Error:", error);

@@ -31,7 +31,7 @@ export default async function TodoList() {
         </li>
       ))}
       {data && data.length === 0 && (
-        <div className="flex justify-center items-center pt-8 pb-2">
+        <div className="flex justify-center items-center text-white pt-8 pb-2">
          No Todo For Today.
         </div>
       )}
